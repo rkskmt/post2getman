@@ -45,6 +45,19 @@ function generateHTML(data, apiId, queryParams = {}) {
       border-radius: 12px;
       padding: 20px;
     }
+    /* Responsive tweaks for Grid.js on small screens */
+    @media (max-width: 640px) {
+      .gridjs-table {
+        white-space: normal !important;
+      }
+      .gridjs-th, .gridjs-td {
+        padding: 0.5rem !important;
+        vertical-align: top;
+      }
+      .gridjs-container {
+        width: 100% !important;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen gradient-bg">
@@ -211,11 +224,7 @@ data = response.json()</pre>
         resizable: true,
         fixedHeader: true,
         height: '500px',
-        style: {
-          table: {
-            'white-space': 'nowrap'
-          }
-        }
+        // no forced nowrap; media query in <style> handles small screens
       }).render(mountEl);
     });
     
