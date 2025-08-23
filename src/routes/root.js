@@ -1,3 +1,5 @@
+import { tailwindCss } from '../styles/tailwind.css.js'
+
 // ルートページのハンドラ
 export const rootHandler = (c) => {
   return c.html(`
@@ -7,7 +9,7 @@ export const rootHandler = (c) => {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>post2getman</title>
-      <script src="https://cdn.tailwindcss.com"></script>
+      <style>${tailwindCss}</style>
       <style>
         .glass {
           background: rgba(255, 255, 255, 0.25);

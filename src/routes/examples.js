@@ -1,3 +1,5 @@
+import { tailwindCss } from '../styles/tailwind.css.js'
+
 // おすすめ（使用例）ページのハンドラ
 export const examplesHandler = (c) => {
   return c.html(`
@@ -7,7 +9,7 @@ export const examplesHandler = (c) => {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>おすすめ - post2getman</title>
-      <script src="https://cdn.tailwindcss.com"></script>
+      <style>${tailwindCss}</style>
       <style>
         .glass { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.18); }
         .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
