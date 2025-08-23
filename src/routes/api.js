@@ -266,7 +266,7 @@ data = response.json()</pre>
       rawData.forEach(item => {
         const lat = parseFloat(item[analysis.latColumn]);
         const lng = parseFloat(item[analysis.lngColumn]);
-        const name = item[analysis.nameColumn] || \`Point \${item.row || ''}\`;
+        const name = item[analysis.labelColumn] || item[analysis.nameColumn] || \`Point \${item.row || ''}\`;
         
         if (!isNaN(lat) && !isNaN(lng)) {
           const marker = L.marker([lat, lng]).addTo(map);
@@ -279,18 +279,6 @@ data = response.json()</pre>
         const group = new L.featureGroup(markers.map(m => L.marker(m)));
         map.fitBounds(group.getBounds().pad(0.1));
       }
-    }
-    
-    function showChart() {
-      const container = document.getElementById('chartContainer');
-      container.classList.remove('hidden');
-      
-      if (!window.chartInitialized) {
-        initializeChart();
-        window.chartInitialized = true;
-      }
-      
-      container.scrollIntoView({ behavior: 'smooth' });
     }
     
     function initializeChart() {
@@ -613,7 +601,8 @@ data = response.json()</pre>
     }
   </script>
 </body>
-</html>`
+</html>
+`
 }
 
 function analyzeData(hits) {
@@ -634,6 +623,13 @@ function analyzeData(hits) {
   const nameColumns = columns.filter(col => 
     col.includes('名称') || col.includes('名前') || col.toLowerCase().includes('name')
   )
+  // ラベル候補（「名」を含み、ただし「名称」は除外）
+  const meiColumns = columns.filter(col => col.includes('名') && !col.includes('名称'))
+  const pickFirstWithData = (cands) => cands.find(col => hits.some(h => {
+    const v = h[col]
+    return v !== undefined && v !== null && String(v).trim() !== ''
+  }))
+  const labelColumn = pickFirstWithData([...meiColumns, ...nameColumns])
   
   // 数値データの検出（改善版）
   const excludePatterns = ['コード', 'ID', '番号', '管理', '識別']
@@ -681,6 +677,7 @@ function analyzeData(hits) {
     latColumn: latColumns[0],
     lngColumn: lngColumns[0],
     nameColumn: nameColumns[0],
+    labelColumn: labelColumn,
     hasNumericData: numericColumns.length > 0,
     numericColumns: numericColumns, // 全ての数値列を返す
     dateColumn: dateColumns[0],
@@ -689,11 +686,11 @@ function analyzeData(hits) {
 }
 
 function getCurrentUrl(params, apiId) {
-  const url = new URL(`https://your-worker.domain/api/${apiId}/json`)
+  const url = new URL('https://your-worker.domain/api/' + apiId + '/json');
   Object.entries(params).forEach(([key, value]) => {
-    if (value) url.searchParams.set(key, value)
-  })
-  return url.toString()
+    if (value) url.searchParams.set(key, value);
+  });
+  return url.toString();
 }
 
 function generateTable(hits) {

@@ -32,6 +32,20 @@ export const rootHandler = (c) => {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-10px); }
         }
+        /* Ensure input text remains visible on paste/autofill */
+        input, input:focus, input::placeholder {
+          color: #111;
+        }
+        input::placeholder { color: #6b7280; }
+        input::selection { background: rgba(59,130,246,.35); color: #111; }
+        /* Safari/Chrome autofill */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+          -webkit-text-fill-color: #111 !important;
+          box-shadow: 0 0 0px 1000px #ffffff inset !important;
+          transition: background-color 9999s ease-in-out 0s;
+        }
       </style>
     </head>
     <body class="min-h-screen gradient-bg">
@@ -80,7 +94,7 @@ export const rootHandler = (c) => {
                     id="apiInput" 
                     placeholder="t000001d0000000011-... または https://spec.api.metro.tokyo.lg.jp/spec/..."
                     value="t000001d0000000011-819fb24a2e74a5f2ea848d548c5cff7d-0"
-                    class="w-full px-4 py-3 bg-white/20 backdrop-blur text-white placeholder-white/60 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                    class="w-full px-4 py-3 bg-white text-gray-900 placeholder-gray-500 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                   />
                 </div>
 
@@ -97,7 +111,7 @@ export const rootHandler = (c) => {
                         value="100"
                         min="1"
                         max="1000"
-                        class="w-full px-4 py-3 bg-white/20 backdrop-blur text-white placeholder-white/60 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50"
+                        class="w-full px-4 py-3 bg-white text-gray-900 placeholder-gray-500 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                       />
                     </div>
                     <div class="flex md:justify-end">
