@@ -1,3 +1,5 @@
+import { tailwindCss } from '../styles/tailwind.css.js'
+
 function generateHTML(data, apiId, queryParams = {}) {
   const { metadata = {}, hits = [], total = 0, subtotal = 0, limit = 0 } = data
   
@@ -10,10 +12,12 @@ function generateHTML(data, apiId, queryParams = {}) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${metadata.title || 'Tokyo Open Data'}</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+  <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+  <style>${tailwindCss}</style>
   <style>
     .glass {
       background: rgba(255, 255, 255, 0.25);
@@ -123,14 +127,14 @@ function generateHTML(data, apiId, queryParams = {}) {
       <div id="chart" class="chart-container"></div>
     </div>
     
-    <!-- Data Table -->
+    <!-- Data Table (Grid.js) -->
     ${hits.length > 0 ? `
     <div class="glass rounded-xl mb-6 hover-scale">
       <div class="p-6 border-b border-white/20">
         <h2 class="text-xl font-semibold text-white">📋 データテーブル (${hits.length.toLocaleString()}件)</h2>
       </div>
-      <div class="overflow-x-auto">
-        ${generateTable(hits)}
+      <div class="overflow-x-auto p-4">
+        <div id="dataTable"></div>
       </div>
     </div>
     ` : ''}
@@ -183,6 +187,37 @@ data = response.json()</pre>
   <script>
     const rawData = ${JSON.stringify(hits)};
     const analysis = ${JSON.stringify(analysis)};
+    
+    // Initialize Grid.js table for better wide-table UX
+    document.addEventListener('DOMContentLoaded', function () {
+      const mountEl = document.getElementById('dataTable');
+      if (!mountEl || !Array.isArray(rawData) || rawData.length === 0) return;
+      
+      const columns = Array.from(new Set(
+        rawData.flatMap(obj => Object.keys(obj).filter(k => k !== 'row'))
+      ));
+      const data = rawData.map(item => columns.map(col => {
+        const v = item[col];
+        return v === null || v === undefined ? '' : String(v);
+      }));
+      
+      // eslint-disable-next-line no-undef
+      new gridjs.Grid({
+        columns,
+        data,
+        sort: true,
+        search: true,
+        pagination: { limit: 20 },
+        resizable: true,
+        fixedHeader: true,
+        height: '500px',
+        style: {
+          table: {
+            'white-space': 'nowrap'
+          }
+        }
+      }).render(mountEl);
+    });
     
     function showMap() {
       const container = document.getElementById('mapContainer');

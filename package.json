@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -i ./src/styles/input.css -o ./src/styles/bundle.css --minify",
+    "embed:css": "node ./scripts/embed-tailwind.js",
+    "build:ui": "npm run build:css && npm run embed:css"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +17,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250823.0",
-    "wrangler": "^4.32.0"
+    "wrangler": "^4.32.0",
+    "tailwindcss": "^3.4.10"
   }
 }

@@ -4,6 +4,7 @@ import { cors } from 'hono/cors'
 import { apiHandler } from './routes/api.js'
 import { debugHandler } from './routes/debug.js'
 import { rootHandler } from './routes/root.js'
+import { examplesHandler } from './routes/examples.js'
 
 const app = new Hono()
 
@@ -16,6 +17,9 @@ app.use('*', cors({
 
 // ルートページ
 app.get('/', rootHandler)
+
+// おすすめ（使用例）ページ
+app.get('/examples', examplesHandler)
 
 // デバッグエンドポイント
 app.get('/debug', debugHandler)
