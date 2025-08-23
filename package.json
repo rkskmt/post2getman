@@ -1,0 +1,19 @@
+{
+  "name": "tokyo-opendata-proxy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "hono": "^4.9.4"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250823.0",
+    "wrangler": "^4.32.0"
+  }
+}
