@@ -97,10 +97,6 @@ function generateHTML(data, apiId, queryParams = {}) {
         <div class="text-3xl font-bold text-emerald-300">${subtotal.toLocaleString()}</div>
         <div class="text-white/70">取得件数</div>
       </div>
-      <div class="glass rounded-xl p-6 text-center hover-scale">
-        <div class="text-3xl font-bold text-blue-300">${limit || '無制限'}</div>
-        <div class="text-white/70">リミット</div>
-      </div>
     </div>
     
     <!-- Visualization Buttons -->
