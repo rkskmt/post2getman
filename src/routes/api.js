@@ -27,12 +27,12 @@ function generateHTML(data, apiId, queryParams = {}) {
     .gradient-bg {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
-    .hover-scale {
+    /*.hover-scale {
       transition: transform 0.2s ease;
     }
     .hover-scale:hover {
       transform: scale(1.02);
-    }
+    }*/
     .glow {
       box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
     }
