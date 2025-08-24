@@ -185,7 +185,18 @@ export const rootHandler = (c) => {
         function extractApiId(input) {
           // URL の場合は /spec/ 以降を取り出し、クエリを除去
           try {
-            const s = String(input || '').trim();
+            let s = String(input || '').trim();
+            
+            // /api/ で始まる場合は削除
+            if (s.startsWith('/api/')) {
+              s = s.slice(5); // '/api/'.length = 5
+            }
+            
+            // /json で終わる場合は削除
+            if (s.endsWith('/json')) {
+              s = s.slice(0, -5); // '/json'.length = 5
+            }
+            
             const marker = '/spec/';
             const pos = s.indexOf(marker);
             if (pos !== -1) {
