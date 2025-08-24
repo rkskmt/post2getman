@@ -184,7 +184,12 @@ data = response.json()</pre>
       </details>
       
       <details class="glass rounded-xl hover-scale">
-        <summary class="p-6 cursor-pointer font-semibold text-white hover:bg-white/10 rounded-xl">🔧 完全なJSONレスポンス</summary>
+        <summary class="p-6 cursor-pointer font-semibold text-white hover:bg-white/10 rounded-xl">
+          <span>🔧 完全なJSONレスポンス</span>
+          <button class="float-right bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 font-semibold text-sm" onclick="window.location.href = window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'raw'">
+            📄 Raw JSON
+          </button>
+        </summary>
         <div class="p-6 border-t border-white/20">
           <pre class="bg-black/20 p-4 rounded-lg text-emerald-300 text-sm overflow-x-auto">${escapeHtml(JSON.stringify(data, null, 2))}</pre>
         </div>
@@ -800,8 +805,9 @@ export const apiHandler = async (c) => {
     const data = await response.json()
     const userAgent = c.req.header('User-Agent') || ''
     const isBrowser = /Mozilla|Chrome|Firefox|Safari|WebKit/.test(userAgent)
+    const isRaw = queryParams.raw === '' || queryParams.raw === 'true'
 
-    if (isBrowser && format === 'json') {
+    if (isBrowser && format === 'json' && !isRaw) {
       return c.html(generateHTML(data, apiId, queryParams))
     } else {
       return c.json(data)
